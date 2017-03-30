@@ -26,7 +26,7 @@ class AHCardCell: UITableViewCell {
                 avatar.AH_setImage(urlStr: cardModel.avatar.absoluteString)
                 author.text = cardModel.author
                 if let text = cardModel.mainText, text.characters.count > 0 {
-                    gapBetweenTextAndPicsConstraint.constant = 8.0
+                    gapBetweenTextAndPicsConstraint.constant = padding
                     mainText.text = text
                     mainTextHeightConstraint.constant = cardModel.mainTextHeight
                 }else{
@@ -61,14 +61,14 @@ class AHCardCell: UITableViewCell {
         pictureCollection.dataSource = self
         pictureCollection.contentInset = .zero
         let layout = pictureCollection.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.minimumLineSpacing = 8.0
-        layout.minimumInteritemSpacing = 8.0
-        layout.sectionInset = .init(top: 0, left: 8.0, bottom: 0, right: 8.0)
+        layout.minimumLineSpacing = padding
+        layout.minimumInteritemSpacing = padding
+        layout.sectionInset = .init(top: 0, left: padding, bottom: 0, right: padding)
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-//        print(cardModel!.pics)
+        print("setSelected")
         // Configure the view for the selected state
     }
     override func prepareForReuse() {

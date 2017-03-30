@@ -16,8 +16,6 @@ class AHPicCollectionCell: UICollectionViewCell {
         didSet{
             if let imageStr = imageStr {
                 pictureView.image = UIImage(named: imageStr)
-            }else{
-                print("**** BUG ****")
             }
         }
     }
