@@ -52,61 +52,23 @@ class AHCardCell: UITableViewCell {
                 
             })
             author.text = card.author
-            if let text = card.mainText, text.characters.count > 0 {
-                gapBetweenTextAndPicsConstraint.constant = padding
-                mainText.text = text
-                mainTextHeightConstraint.constant = viewModel.mainTextHeight
-            }else{
-                gapBetweenTextAndPicsConstraint.constant = 0.0
-                mainText.text = ""
-                mainTextHeightConstraint.constant = 0.0
-            }
-            if let pics = card.pics, pics.count > 0 {
-                pictureCollectionHeightConstraint.constant = viewModel.pictureCollectionHeight
-            }else{
-                gapBetweenTextAndPicsConstraint.constant = 0.0
-                pictureCollectionHeightConstraint.constant = 0.0
-            }
-            if viewModel.hasFinishedImageDownload {
-                pictureCollection.reloadData()
-            }else{
-                placeholdingCount = card.pics?.count ?? 0
-                self.pictureCollection.reloadData()
-                viewModel.goDownloadImages(completion: {[weak self] (_) in
-                    if self?.viewModel !== viewModel {
-                        print("this cell is currently being used by another viewModel. Return. Next time it should reload already downloaded images.")
-                        return
-                    }
-                    self?.pictureCollection.reloadData()
-                    self?.layoutIfNeeded()
-                    })
-            }
-            layoutIfNeeded()
+            
+            layoutAdjustMents(card, viewModel)
+            
+            loadData(card, viewModel)
+            
         }
     }
-    
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
         avatar.image = #imageLiteral(resourceName: "placeholder")
         setupCollectionView()
     }
-    private func setupCollectionView() {
-        picCollectionMananger.pictureCollection = self.pictureCollection
-        pictureCollection.delegate = picCollectionMananger
-        pictureCollection.dataSource = picCollectionMananger
-        pictureCollection.contentInset = .zero
-        let layout = pictureCollection.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.minimumLineSpacing = padding
-        layout.minimumInteritemSpacing = padding
-        
-    }
     
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
-    }
+
     override func prepareForReuse() {
         mainText.text = ""
         avatar.image = #imageLiteral(resourceName: "placeholder")
@@ -118,8 +80,56 @@ class AHCardCell: UITableViewCell {
 
 
 
-
-
+///MARK: - Helper Functions
+extension AHCardCell {
+    
+    fileprivate func setupCollectionView() {
+        picCollectionMananger.pictureCollection = self.pictureCollection
+        pictureCollection.delegate = picCollectionMananger
+        pictureCollection.dataSource = picCollectionMananger
+        pictureCollection.contentInset = .zero
+        let layout = pictureCollection.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.minimumLineSpacing = padding
+        layout.minimumInteritemSpacing = padding
+        
+    }
+    
+    fileprivate func loadData(_ card: AHCardModel, _ viewModel: AHCardViewModel) {
+        if viewModel.hasFinishedImageDownload {
+            pictureCollection.reloadData()
+        }else{
+            placeholdingCount = card.pics?.count ?? 0
+            self.pictureCollection.reloadData()
+            viewModel.goDownloadImages(completion: {[weak self] (_) in
+                if self?.viewModel !== viewModel {
+                    print("this cell is currently being used by another viewModel. Return. Next time it should reload already downloaded images.")
+                    return
+                }
+                self?.pictureCollection.reloadData()
+                self?.layoutIfNeeded()
+                })
+        }
+        layoutIfNeeded()
+    }
+    
+    fileprivate func layoutAdjustMents(_ card: AHCardModel, _ viewModel: AHCardViewModel) {
+        if let text = card.mainText, text.characters.count > 0 {
+            gapBetweenTextAndPicsConstraint.constant = padding
+            mainText.text = text
+            mainTextHeightConstraint.constant = viewModel.mainTextHeight
+        }else{
+            gapBetweenTextAndPicsConstraint.constant = 0.0
+            mainText.text = ""
+            mainTextHeightConstraint.constant = 0.0
+        }
+        if let pics = card.pics, pics.count > 0 {
+            pictureCollectionHeightConstraint.constant = viewModel.pictureCollectionHeight
+        }else{
+            gapBetweenTextAndPicsConstraint.constant = 0.0
+            pictureCollectionHeightConstraint.constant = 0.0
+        }
+    }
+}
 
 
 
