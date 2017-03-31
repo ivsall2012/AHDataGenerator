@@ -16,7 +16,6 @@ class AHCardCell: UITableViewCell {
     @IBOutlet weak var pictureCollection: UICollectionView!
     @IBOutlet weak var mainTextHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var pictureCollectionHeightConstraint: NSLayoutConstraint!
-
     @IBOutlet weak var gapBetweenTextAndPicsConstraint: NSLayoutConstraint!
     
     var placeholdingCount: Int = 9
@@ -25,8 +24,14 @@ class AHCardCell: UITableViewCell {
         didSet{
             if let viewModel = viewModel {
                 if let card = viewModel.card {
+                    // avatar image is cached
                     viewModel.goDownloadAvatar(completion: { (image) in
                         self.avatar.image = image
+                        self.avatar.layer.masksToBounds = true
+                        self.avatar.layer.cornerRadius = 45.0
+                        self.avatar.layer.borderColor = UIColor.orange.cgColor
+                        self.avatar.layer.borderWidth = 2.0
+                        
                     })
                     author.text = card.author
                     if let text = card.mainText, text.characters.count > 0 {
@@ -80,7 +85,7 @@ class AHCardCell: UITableViewCell {
         let layout = pictureCollection.collectionViewLayout as! UICollectionViewFlowLayout
         layout.minimumLineSpacing = padding
         layout.minimumInteritemSpacing = padding
-        layout.sectionInset = .init(top: 0, left: padding, bottom: 0, right: padding)
+//        layout.sectionInset = .init(top: 0, left: padding, bottom: 0, right: padding)
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

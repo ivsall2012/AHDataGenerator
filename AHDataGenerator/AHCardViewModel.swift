@@ -10,7 +10,7 @@ import UIKit
 let padding: CGFloat = 8.0
 let avatarHeight: CGFloat = 90.0
 let authorHeight: CGFloat = 20.5
-let cardToolBarHeight: CGFloat = 33.0
+let cardToolBarHeight: CGFloat = 49.0
 let pictureMaxWidth: CGFloat = UIScreen.main.bounds.width - 8.0 * 4
 
 
