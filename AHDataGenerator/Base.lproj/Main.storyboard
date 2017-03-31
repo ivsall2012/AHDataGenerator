@@ -25,7 +25,7 @@
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ysr-6d-mEf">
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="90" id="7Ov-90-NgS"/>
+                                                <constraint firstAttribute="height" constant="60" id="7Ov-90-NgS"/>
                                                 <constraint firstAttribute="width" secondItem="Ysr-6d-mEf" secondAttribute="height" multiplier="1:1" id="HeZ-OR-VbN"/>
                                             </constraints>
                                         </imageView>
@@ -123,7 +123,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="180" id="eFh-ZO-Gaq"/>
                                             </constraints>
-                                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="yZN-E6-Dsd">
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ey4-1f-Vlz">
                                                 <size key="itemSize" width="50" height="50"/>
                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>

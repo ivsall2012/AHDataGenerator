@@ -45,10 +45,6 @@ class AHCardCell: UITableViewCell {
             // avatar image is cached
             viewModel.goDownloadAvatar(completion: { (image) in
                 self.avatar.image = image
-                self.avatar.layer.masksToBounds = true
-                self.avatar.layer.cornerRadius = 45.0
-                self.avatar.layer.borderColor = UIColor.orange.cgColor
-                self.avatar.layer.borderWidth = 2.0
                 
             })
             author.text = card.author
@@ -63,7 +59,7 @@ class AHCardCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        avatar.image = #imageLiteral(resourceName: "placeholder")
+        setupAvatar()
         setupCollectionView()
     }
     
@@ -82,6 +78,14 @@ class AHCardCell: UITableViewCell {
 
 ///MARK: - Helper Functions
 extension AHCardCell {
+    
+    fileprivate func setupAvatar() {
+        avatar.image = #imageLiteral(resourceName: "placeholder")
+        avatar.layer.masksToBounds = true
+        avatar.layer.cornerRadius = avatarHeight * 0.5
+        avatar.layer.borderColor = UIColor.orange.cgColor
+        avatar.layer.borderWidth = 2.0
+    }
     
     fileprivate func setupCollectionView() {
         picCollectionMananger.pictureCollection = self.pictureCollection
