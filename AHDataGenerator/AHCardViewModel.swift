@@ -23,6 +23,8 @@ class AHCardViewModel: NSObject {
     var allImages = [UIImage]()
     var avatar: UIImage?
     fileprivate var imageDownloadhandler: ((_ finished: Bool)->Swift.Void)?
+    
+    
     var card: AHCardModel? {
         didSet {
             if let card = card {

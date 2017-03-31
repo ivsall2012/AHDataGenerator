@@ -19,7 +19,18 @@ class AHCardCell: UITableViewCell {
     @IBOutlet weak var gapBetweenTextAndPicsConstraint: NSLayoutConstraint!
     
     var placeholdingCount: Int = 9
-    var mainVC: UIViewController?
+    weak var mainVC: UIViewController? {
+        didSet{
+            if let mainVC = mainVC {
+                picCollectionMananger.mainVC = mainVC
+            }
+        }
+    }
+    
+    // this is a dalagate/dataSource manager for picCollection
+    var picCollectionMananger: AHPicCollectionManager = AHPicCollectionManager()
+    
+    // a viewModel for AHCardModel
     var viewModel: AHCardViewModel? {
         didSet{
             if let viewModel = viewModel {
@@ -30,7 +41,7 @@ class AHCardCell: UITableViewCell {
     
     private func setupViewModel(viewModel: AHCardViewModel) {
         if let card = viewModel.card {
-            
+            picCollectionMananger.viewModel = viewModel
             // avatar image is cached
             viewModel.goDownloadAvatar(completion: { (image) in
                 self.avatar.image = image
@@ -73,22 +84,24 @@ class AHCardCell: UITableViewCell {
             layoutIfNeeded()
         }
     }
-
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         avatar.image = #imageLiteral(resourceName: "placeholder")
         setupCollectionView()
     }
-    
-    func setupCollectionView() {
-        pictureCollection.delegate = self
-        pictureCollection.dataSource = self
+    private func setupCollectionView() {
+        picCollectionMananger.pictureCollection = self.pictureCollection
+        pictureCollection.delegate = picCollectionMananger
+        pictureCollection.dataSource = picCollectionMananger
         pictureCollection.contentInset = .zero
         let layout = pictureCollection.collectionViewLayout as! UICollectionViewFlowLayout
         layout.minimumLineSpacing = padding
         layout.minimumInteritemSpacing = padding
-//        layout.sectionInset = .init(top: 0, left: padding, bottom: 0, right: padding)
+        
     }
+    
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -105,57 +118,7 @@ class AHCardCell: UITableViewCell {
 
 
 
-extension AHCardCell: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return viewModel?.pictureSize ?? CGSize.zero
-    }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let viewModel = viewModel else {
-            return
-        }
-        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "AHPhotoBrowser") as! AHPhotoBrowser
-        
-        if viewModel.hasFinishedImageDownload {
-            vc.viewModel = viewModel
-            mainVC?.present(vc, animated: true, completion: nil)
-        }
-        
-    }
-    
-
-}
-
-extension AHCardCell: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // it doesn't mater whether or not shouldPlaceholding since the pics count is the same
-        return viewModel?.card?.pics?.count ?? 0
-    }
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! AHPicCollectionCell
-        
-        guard let viewModel = viewModel else {
-            return cell
-        }
-        
-        if viewModel.hasFinishedImageDownload {
-            cell.image = viewModel.allImages[indexPath.item]
-        }else{
-            cell.image = #imageLiteral(resourceName: "placeholder")
-        }
-        
-        return cell
-    }
-    @objc(collectionView:willDisplayCell:forItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-
-    }
-}
 
 
 
