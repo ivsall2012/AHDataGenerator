@@ -23,55 +23,57 @@ class AHCardCell: UITableViewCell {
     var viewModel: AHCardViewModel? {
         didSet{
             if let viewModel = viewModel {
-                if let card = viewModel.card {
-                    // avatar image is cached
-                    viewModel.goDownloadAvatar(completion: { (image) in
-                        self.avatar.image = image
-                        self.avatar.layer.masksToBounds = true
-                        self.avatar.layer.cornerRadius = 45.0
-                        self.avatar.layer.borderColor = UIColor.orange.cgColor
-                        self.avatar.layer.borderWidth = 2.0
-                        
-                    })
-                    author.text = card.author
-                    if let text = card.mainText, text.characters.count > 0 {
-                        gapBetweenTextAndPicsConstraint.constant = padding
-                        mainText.text = text
-                        mainTextHeightConstraint.constant = viewModel.mainTextHeight
-                    }else{
-                        gapBetweenTextAndPicsConstraint.constant = 0.0
-                        mainText.text = ""
-                        mainTextHeightConstraint.constant = 0.0
-                    }
-                    if let pics = card.pics, pics.count > 0 {
-                        pictureCollectionHeightConstraint.constant = viewModel.pictureCollectionHeight
-                    }else{
-                        gapBetweenTextAndPicsConstraint.constant = 0.0
-                        pictureCollectionHeightConstraint.constant = 0.0
-                    }
-                    if viewModel.hasFinishedImageDownload {
-                        pictureCollection.reloadData()
-                    }else{
-                        placeholdingCount = card.pics?.count ?? 0
-                        self.pictureCollection.reloadData()
-                        viewModel.goDownloadImages(completion: {[weak self] (_) in
-                            if self?.viewModel !== viewModel {
-                                print("this cell is currently being used by another viewModel. Return. Next time it should reload already downloaded images.")
-                                return
-                            }
-                            self?.pictureCollection.reloadData()
-                            self?.layoutIfNeeded()
-                        })
-                    }
-                    layoutIfNeeded()
-                }
-                
-                
+                setupViewModel(viewModel: viewModel)
             }
-            
         }
     }
     
+    private func setupViewModel(viewModel: AHCardViewModel) {
+        if let card = viewModel.card {
+            
+            // avatar image is cached
+            viewModel.goDownloadAvatar(completion: { (image) in
+                self.avatar.image = image
+                self.avatar.layer.masksToBounds = true
+                self.avatar.layer.cornerRadius = 45.0
+                self.avatar.layer.borderColor = UIColor.orange.cgColor
+                self.avatar.layer.borderWidth = 2.0
+                
+            })
+            author.text = card.author
+            if let text = card.mainText, text.characters.count > 0 {
+                gapBetweenTextAndPicsConstraint.constant = padding
+                mainText.text = text
+                mainTextHeightConstraint.constant = viewModel.mainTextHeight
+            }else{
+                gapBetweenTextAndPicsConstraint.constant = 0.0
+                mainText.text = ""
+                mainTextHeightConstraint.constant = 0.0
+            }
+            if let pics = card.pics, pics.count > 0 {
+                pictureCollectionHeightConstraint.constant = viewModel.pictureCollectionHeight
+            }else{
+                gapBetweenTextAndPicsConstraint.constant = 0.0
+                pictureCollectionHeightConstraint.constant = 0.0
+            }
+            if viewModel.hasFinishedImageDownload {
+                pictureCollection.reloadData()
+            }else{
+                placeholdingCount = card.pics?.count ?? 0
+                self.pictureCollection.reloadData()
+                viewModel.goDownloadImages(completion: {[weak self] (_) in
+                    if self?.viewModel !== viewModel {
+                        print("this cell is currently being used by another viewModel. Return. Next time it should reload already downloaded images.")
+                        return
+                    }
+                    self?.pictureCollection.reloadData()
+                    self?.layoutIfNeeded()
+                    })
+            }
+            layoutIfNeeded()
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         avatar.image = #imageLiteral(resourceName: "placeholder")
