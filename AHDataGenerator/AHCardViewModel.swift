@@ -9,9 +9,8 @@
 import UIKit
 let padding: CGFloat = 8.0
 let avatarHeight: CGFloat = 90.0
-let authorHeight: CGFloat = 20.5
 let cardToolBarHeight: CGFloat = 49.0
-let pictureMaxWidth: CGFloat = UIScreen.main.bounds.width - 8.0 * 4
+let pictureMaxWidth: CGFloat = UIScreen.main.bounds.width - padding * 4
 
 
 class AHCardViewModel: NSObject {
@@ -28,7 +27,7 @@ class AHCardViewModel: NSObject {
         didSet {
             if let card = card {
                 
-                cellHeight = padding + avatarHeight + padding + authorHeight + padding + cardToolBarHeight
+                cellHeight = padding + avatarHeight + padding + cardToolBarHeight
                 
                 if let mainText = card.mainText, mainText.characters.count > 0 {
                     let screenWidth = UIScreen.main.bounds.width
