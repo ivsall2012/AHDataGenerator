@@ -12,9 +12,10 @@
 		A11D36DD1E8CC1560058A1EC /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11D36DC1E8CC1560058A1EC /* UIImageView+extension.swift */; };
 		A11D36E01E8D9A6A0058A1EC /* AHPhotoBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11D36DE1E8D9A6A0058A1EC /* AHPhotoBrowser.swift */; };
 		A11D36E31E8D9BD80058A1EC /* AHPhotoBrowserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11D36E21E8D9BD80058A1EC /* AHPhotoBrowserCell.swift */; };
+		A11D36E71E8DA4940058A1EC /* AHAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11D36E51E8DA4940058A1EC /* AHAnimator.swift */; };
+		A11D36EA1E8DB36A0058A1EC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A11D36E81E8DB36A0058A1EC /* Main.storyboard */; };
 		A1EAD06C1E8C414E00FD5EA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EAD06B1E8C414E00FD5EA7 /* AppDelegate.swift */; };
 		A1EAD06E1E8C414E00FD5EA7 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EAD06D1E8C414E00FD5EA7 /* HomeVC.swift */; };
-		A1EAD0711E8C414E00FD5EA7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1EAD06F1E8C414E00FD5EA7 /* Main.storyboard */; };
 		A1EAD0731E8C414E00FD5EA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EAD0721E8C414E00FD5EA7 /* Assets.xcassets */; };
 		A1EAD0761E8C414E00FD5EA7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1EAD0741E8C414E00FD5EA7 /* LaunchScreen.storyboard */; };
 		A1EAD0811E8C414E00FD5EA7 /* AHDataGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EAD0801E8C414E00FD5EA7 /* AHDataGeneratorTests.swift */; };
@@ -41,10 +42,11 @@
 		A11D36DC1E8CC1560058A1EC /* UIImageView+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImageView+extension.swift"; path = "../UIImageView+extension.swift"; sourceTree = "<group>"; };
 		A11D36DE1E8D9A6A0058A1EC /* AHPhotoBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AHPhotoBrowser.swift; sourceTree = "<group>"; };
 		A11D36E21E8D9BD80058A1EC /* AHPhotoBrowserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AHPhotoBrowserCell.swift; sourceTree = "<group>"; };
+		A11D36E51E8DA4940058A1EC /* AHAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AHAnimator.swift; sourceTree = "<group>"; };
+		A11D36E91E8DB36A0058A1EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A1EAD0681E8C414E00FD5EA7 /* AHDataGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AHDataGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1EAD06B1E8C414E00FD5EA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1EAD06D1E8C414E00FD5EA7 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
-		A1EAD0701E8C414E00FD5EA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A1EAD0721E8C414E00FD5EA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1EAD0751E8C414E00FD5EA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1EAD0771E8C414E00FD5EA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -103,9 +105,9 @@
 				A1EAD08B1E8C423E00FD5EA7 /* AHCardDataGenerator.swift */,
 				A11D36D61E8CB4EC0058A1EC /* AHPicCollectionCell.swift */,
 				A1EAD0931E8C66A100FD5EA7 /* AHCardCell.swift */,
-				A1EAD06F1E8C414E00FD5EA7 /* Main.storyboard */,
 				A1EAD0721E8C414E00FD5EA7 /* Assets.xcassets */,
 				A1EAD0741E8C414E00FD5EA7 /* LaunchScreen.storyboard */,
+				A11D36E81E8DB36A0058A1EC /* Main.storyboard */,
 				A1EAD08D1E8C477500FD5EA7 /* NationalParks.plist */,
 				A1EAD08E1E8C477500FD5EA7 /* State Flags Attribution.txt */,
 				A1EAD0771E8C414E00FD5EA7 /* Info.plist */,
@@ -113,6 +115,7 @@
 				A11D36DA1E8CBB1A0058A1EC /* AHNetowrkTool.swift */,
 				A11D36E21E8D9BD80058A1EC /* AHPhotoBrowserCell.swift */,
 				A11D36DE1E8D9A6A0058A1EC /* AHPhotoBrowser.swift */,
+				A11D36E51E8DA4940058A1EC /* AHAnimator.swift */,
 			);
 			path = AHDataGenerator;
 			sourceTree = "<group>";
@@ -212,10 +215,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1EAD08F1E8C477500FD5EA7 /* NationalParks.plist in Resources */,
+				A11D36EA1E8DB36A0058A1EC /* Main.storyboard in Resources */,
 				A1EAD0761E8C414E00FD5EA7 /* LaunchScreen.storyboard in Resources */,
 				A1EAD0901E8C477500FD5EA7 /* State Flags Attribution.txt in Resources */,
 				A1EAD0731E8C414E00FD5EA7 /* Assets.xcassets in Resources */,
-				A1EAD0711E8C414E00FD5EA7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +239,7 @@
 				A1EAD0921E8C562A00FD5EA7 /* AHCardModel.swift in Sources */,
 				A11D36D71E8CB4EC0058A1EC /* AHPicCollectionCell.swift in Sources */,
 				A11D36DD1E8CC1560058A1EC /* UIImageView+extension.swift in Sources */,
+				A11D36E71E8DA4940058A1EC /* AHAnimator.swift in Sources */,
 				A11D36E01E8D9A6A0058A1EC /* AHPhotoBrowser.swift in Sources */,
 				A1EAD0941E8C66A100FD5EA7 /* AHCardCell.swift in Sources */,
 				A1EAD06E1E8C414E00FD5EA7 /* HomeVC.swift in Sources */,
@@ -265,10 +269,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		A1EAD06F1E8C414E00FD5EA7 /* Main.storyboard */ = {
+		A11D36E81E8DB36A0058A1EC /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A1EAD0701E8C414E00FD5EA7 /* Base */,
+				A11D36E91E8DB36A0058A1EC /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

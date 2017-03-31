@@ -15,7 +15,7 @@ class AHPicCollectionCell: UICollectionViewCell {
     var imageStr: String? {
         didSet{
             if let imageStr = imageStr {
-                pictureView.image = UIImage(named: imageStr)
+                pictureView.AH_setImage(urlStr: imageStr)
             }
         }
     }

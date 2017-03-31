@@ -20,6 +20,7 @@ class HomeVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cardId) as! AHCardCell
         cell.cardModel = cards[indexPath.row]
+        cell.mainVC = self
         return cell
         
     }

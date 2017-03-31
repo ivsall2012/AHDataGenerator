@@ -8,6 +8,13 @@
 
 import UIKit
 
+
+
+
+
+
+
+
 class AHCardCell: UITableViewCell {
     @IBOutlet weak var avatar: UIImageView!
     @IBOutlet weak var author: UILabel!
@@ -19,7 +26,7 @@ class AHCardCell: UITableViewCell {
 
     @IBOutlet weak var gapBetweenTextAndPicsConstraint: NSLayoutConstraint!
 
-    
+    var mainVC: UIViewController?
     var cardModel: AHCardModel? {
         didSet{
             if let cardModel = cardModel {
@@ -88,12 +95,13 @@ extension AHCardCell: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("didSelectItemAt")
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "AHPhotoBrowser") as! AHPhotoBrowser
+        let model = cardModel!.pics
+        vc.photos = model
+        mainVC?.present(vc, animated: true, completion: nil)
     }
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        print("shouldSelectItemAt")
-        return true
-    }
+
     
 }
 
@@ -108,6 +116,7 @@ extension AHCardCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! AHPicCollectionCell
         let pics = cardModel!.pics!
+        cell.backgroundColor = UIColor.red
         cell.imageStr = pics[indexPath.item]
         return cell
     }

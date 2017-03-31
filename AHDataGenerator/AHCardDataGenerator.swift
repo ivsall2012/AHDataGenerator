@@ -10,7 +10,7 @@ import UIKit
 
 public class AHCardDataGenerator: NSObject {
     static let generator =  AHCardDataGenerator()
-    let shouldUseLocalImages = true
+    let shouldUseLocalImages = false
     let randomPicURL = "http://lorempixel.com/400/200"
     
     let paragraph = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam. "
