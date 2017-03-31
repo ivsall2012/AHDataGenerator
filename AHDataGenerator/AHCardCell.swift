@@ -43,7 +43,6 @@ class AHCardCell: UITableViewCell {
                 }
                 if let pics = cardModel.pics, pics.count > 0 {
                     pictureCollectionHeightConstraint.constant = cardModel.pictureCollectionHeight
-                    print(pictureCollectionHeightConstraint.constant)
                 }else{
                     gapBetweenTextAndPicsConstraint.constant = 0.0
                     pictureCollectionHeightConstraint.constant = 0.0
@@ -116,8 +115,7 @@ extension AHCardCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! AHPicCollectionCell
         let pics = cardModel!.pics!
-        cell.backgroundColor = UIColor.red
-        cell.imageStr = pics[indexPath.item]
+        
         return cell
     }
 }

@@ -11,27 +11,20 @@ import UIKit
 let photoBrowserCellMargin: CGFloat = 5.0
 class AHPhotoBrowserCell: UICollectionViewCell {
     @IBOutlet weak var scrollView: UIScrollView!
-    private var imageView = UIImageView()
-    
-    var imageStr: String? {
-        didSet{
-            if let imageStr = imageStr {
-                imageView.AH_setImage(urlStr: imageStr, completion: { (image) in
-                    if let image = image {
-                        self.calculateImageView(image: image)
-                    }
-                })
-                
+    var imageView = UIImageView()
+
+    var image: UIImage? {
+        didSet {
+            if let image = image {
+                setupImageView(image: image)
             }
         }
     }
-
-    
     override func awakeFromNib() {
         scrollView.addSubview(imageView)
     }
     
-    func calculateImageView(image: UIImage) {
+    func setupImageView(image: UIImage) {
         let superSize = UIScreen.main.bounds.size
         let imgSize = image.size
         let newWidth = superSize.width - 2*photoBrowserCellMargin

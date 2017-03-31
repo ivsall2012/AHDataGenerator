@@ -17,17 +17,17 @@ class AHNetowrkTool: NSObject {
         guard let url = URL(string: urlStr) else {
             return
         }
-        if shouldCacheImage {
-            let cacheSizeMemory = 500 * 1024 * 1024; // 500 MB
-            let cacheSizeDisk = 500 * 1024 * 1024; // 500 MB
-            let sharedCache = URLCache(memoryCapacity: cacheSizeMemory, diskCapacity: cacheSizeDisk, diskPath: "urlCache")
-            URLCache.shared = sharedCache
-            let config = URLSession.shared.configuration
-            config.requestCachePolicy = .returnCacheDataElseLoad
-        }else{
-            let config = URLSession.shared.configuration
-            config.requestCachePolicy = .reloadIgnoringLocalCacheData
-        }
+//        if shouldCacheImage {
+//            let cacheSizeMemory = 500 * 1024 * 1024; // 500 MB
+//            let cacheSizeDisk = 500 * 1024 * 1024; // 500 MB
+//            let sharedCache = URLCache(memoryCapacity: cacheSizeMemory, diskCapacity: cacheSizeDisk, diskPath: "urlCache")
+//            URLCache.shared = sharedCache
+//            let config = URLSession.shared.configuration
+//            config.requestCachePolicy = .returnCacheDataElseLoad
+//        }else{
+//            let config = URLSession.shared.configuration
+//            config.requestCachePolicy = .reloadIgnoringLocalCacheData
+//        }
         let task = URLSession.shared.dataTask(with: url) { (data, _, error) in
             DispatchQueue.main.async {
                 if let data = data, error == nil {

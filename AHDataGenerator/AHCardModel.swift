@@ -21,15 +21,15 @@ class AHCardModel: NSObject {
     
     var cellHeight: CGFloat = 0.0
     var pictureSize: CGSize = CGSize.zero
-    
+    var mainTextHeight: CGFloat = 0.0
+    var pictureCollectionHeight: CGFloat = 0.0
     
     var author: String
     var avatar: URL
     var mainText: String?
     var pics: [String]?
     
-    var mainTextHeight: CGFloat = 0.0
-    var pictureCollectionHeight: CGFloat = 0.0
+
     init(dict: [String: Any]) {
         cellHeight = padding + avatarHeight + padding + authorHeight + padding + cardToolBarHeight
         self.author = dict["author"] as! String
