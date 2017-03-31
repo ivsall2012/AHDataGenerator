@@ -22,10 +22,12 @@ class AHCardViewModel: NSObject {
     
     var hasFinishedImageDownload = false
     var allImages = [UIImage]()
+    var avatar: UIImage?
     fileprivate var imageDownloadhandler: ((_ finished: Bool)->Swift.Void)?
     var card: AHCardModel? {
         didSet {
             if let card = card {
+                
                 cellHeight = padding + avatarHeight + padding + authorHeight + padding + cardToolBarHeight
                 
                 if let mainText = card.mainText, mainText.characters.count > 0 {
@@ -45,11 +47,34 @@ class AHCardViewModel: NSObject {
                     pictureCollectionHeight = numOfRows * newHeight + (numOfRows - 1)*padding
                     pictureSize = CGSize(width: newWidth, height: newHeight)
                     cellHeight += (padding + pictureCollectionHeight)
-                    
                 }
+
             }
         }
     }
+    
+    func goDownloadAvatar(completion:@escaping (_ image: UIImage)->Swift.Void){
+        if avatar != nil {
+            completion(avatar!)
+            return
+        }
+        
+        guard let card = card else {
+            completion(#imageLiteral(resourceName: "placeholder"))
+            return
+        }
+        
+        AHNetowrkTool.tool.requestImage(urlStr: card.avatarUrl!, completion: { (image) in
+            if let image = image {
+                self.avatar = image
+                completion(image)
+                return
+            }
+            completion(#imageLiteral(resourceName: "placeholder"))
+        })
+        
+    }
+
     
     /// You should call allImages to load all images for views
     func goDownloadImages(completion: @escaping (_ finished: Bool)->Swift.Void) {

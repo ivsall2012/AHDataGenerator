@@ -8,13 +8,6 @@
 
 import UIKit
 
-
-
-
-
-
-
-
 class AHCardCell: UITableViewCell {
     @IBOutlet weak var avatar: UIImageView!
     @IBOutlet weak var author: UILabel!
@@ -25,13 +18,17 @@ class AHCardCell: UITableViewCell {
     @IBOutlet weak var pictureCollectionHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var gapBetweenTextAndPicsConstraint: NSLayoutConstraint!
-
+    
+    var placeholdingCount: Int = 9
+    var shouldDoPlaceholding = false
     var mainVC: UIViewController?
     var viewModel: AHCardViewModel? {
         didSet{
             if let viewModel = viewModel {
                 if let card = viewModel.card {
-                    avatar.AH_setImage(urlStr: card.avatar.absoluteString)
+                    viewModel.goDownloadAvatar(completion: { (image) in
+                        self.avatar.image = image
+                    })
                     author.text = card.author
                     if let text = card.mainText, text.characters.count > 0 {
                         gapBetweenTextAndPicsConstraint.constant = padding
@@ -49,14 +46,19 @@ class AHCardCell: UITableViewCell {
                         pictureCollectionHeightConstraint.constant = 0.0
                     }
                     if viewModel.hasFinishedImageDownload {
+                        shouldDoPlaceholding = false
                         pictureCollection.reloadData()
                     }else{
+                        shouldDoPlaceholding = true
+                        placeholdingCount = card.pics?.count ?? 0
+                        self.pictureCollection.reloadData()
                         viewModel.goDownloadImages(completion: {[weak self] (_) in
+                            self?.shouldDoPlaceholding = false
                             self?.pictureCollection.reloadData()
                             self?.layoutIfNeeded()
                             })
                     }
-                    
+                    layoutIfNeeded()
                 }
                 
                 
@@ -98,6 +100,7 @@ class AHCardCell: UITableViewCell {
 
 extension AHCardCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         return viewModel?.pictureSize ?? CGSize.zero
     }
 
@@ -114,8 +117,8 @@ extension AHCardCell: UICollectionViewDelegateFlowLayout {
         }
         
     }
-
     
+
 }
 
 extension AHCardCell: UICollectionViewDataSource {
@@ -124,6 +127,7 @@ extension AHCardCell: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // it doesn't mater whether or not shouldPlaceholding since the pics count is the same
         return viewModel?.card?.pics?.count ?? 0
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -132,14 +136,17 @@ extension AHCardCell: UICollectionViewDataSource {
         guard let viewModel = viewModel else {
             return cell
         }
-
-        guard viewModel.hasFinishedImageDownload else {
-            return cell
+        
+        if shouldDoPlaceholding {
+            cell.image = #imageLiteral(resourceName: "placeholder")
+        }else{
+            cell.image = viewModel.allImages[indexPath.item]
         }
         
-        cell.image = viewModel.allImages[indexPath.item]
-        
         return cell
+    }
+    @objc(collectionView:willDisplayCell:forItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+
     }
 }
 

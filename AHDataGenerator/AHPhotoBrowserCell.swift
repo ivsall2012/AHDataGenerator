@@ -24,6 +24,11 @@ class AHPhotoBrowserCell: UICollectionViewCell {
         scrollView.addSubview(imageView)
     }
     
+    override func prepareForReuse() {
+        print("photoBrowser prepareForReuse")
+        imageView.image = #imageLiteral(resourceName: "placeholder")
+    }
+    
     ///MARK:- This function is the part where you can then download HD image and set size and use this original smaller size image as a placeholder
     func setupImageView(image: UIImage) {
         let superSize = UIScreen.main.bounds.size

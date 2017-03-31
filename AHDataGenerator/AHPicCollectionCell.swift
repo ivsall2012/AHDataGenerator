@@ -17,6 +17,7 @@ class AHPicCollectionCell: UICollectionViewCell {
         didSet{
             if let image = image {
                 pictureView.image = image
+                layoutIfNeeded()
             }
         }
     }

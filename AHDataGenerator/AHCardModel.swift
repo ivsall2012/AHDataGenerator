@@ -17,7 +17,7 @@ class AHCardModel: NSObject {
 
     
     var author: String
-    var avatar: URL
+    var avatarUrl: String?
     var mainText: String?
     var pics: [String]?
     
@@ -25,8 +25,7 @@ class AHCardModel: NSObject {
     init(dict: [String: Any]) {
         
         self.author = dict["author"] as! String
-        let avatarStr = dict["avatar"] as! String
-        self.avatar = URL(string: avatarStr)!
+        avatarUrl = dict["avatar"] as! String
         if let mainText = dict["mainText"] as? String {
             self.mainText = mainText
         }

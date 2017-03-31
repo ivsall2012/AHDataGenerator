@@ -68,7 +68,7 @@ extension AHCardDataGenerator{
         
         
         // 85% chance for having a main text
-        if randomPercentChance(percent: 0) {
+        if randomPercentChance(percent: 80) {
             let smalText = random(0, 3)
             let bigText = random(3, 5)
             // it has 60% chance to have smal text
@@ -82,7 +82,7 @@ extension AHCardDataGenerator{
         
         if shouldUseLocalImages {
             // 70% chance for having a pic gallery
-            if randomPercentChance(percent: 100) {
+            if randomPercentChance(percent: 70) {
                 let numOfPics = random(1, 10)
                 var pics = [String]()
                 for _ in 0..<numOfPics {
