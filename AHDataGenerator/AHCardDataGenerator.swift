@@ -100,9 +100,11 @@ extension AHCardDataGenerator{
             for _ in 0..<numOfPics {
                 let width = 100 * random(1, 6)
                 let height = 100 * random(1, 6)
-//                let imageUrl = "http://lorempixel.com/\(width)/\(height)"
-//                let imageUrl = "http://placehold.it/\(width)x\(height)"
-                let imageUrl = "https://placeimg.com/\(width)/\(height)/any"
+                let imageUrlA = "http://lorempixel.com/\(width)/\(height)"
+                let imageUrlB = "http://placehold.it/\(width)x\(height)"
+                let imageUrlC = "https://placeimg.com/\(width)/\(height)/any"
+                let images = [imageUrlA,imageUrlB,imageUrlC]
+                let imageUrl = images[random(images.count)]
                 pics.append(imageUrl)
             }
             dict["pics"] = pics

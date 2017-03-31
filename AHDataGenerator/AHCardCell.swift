@@ -20,7 +20,6 @@ class AHCardCell: UITableViewCell {
     @IBOutlet weak var gapBetweenTextAndPicsConstraint: NSLayoutConstraint!
     
     var placeholdingCount: Int = 9
-    var shouldDoPlaceholding = false
     var mainVC: UIViewController?
     var viewModel: AHCardViewModel? {
         didSet{
@@ -46,17 +45,18 @@ class AHCardCell: UITableViewCell {
                         pictureCollectionHeightConstraint.constant = 0.0
                     }
                     if viewModel.hasFinishedImageDownload {
-                        shouldDoPlaceholding = false
                         pictureCollection.reloadData()
                     }else{
-                        shouldDoPlaceholding = true
                         placeholdingCount = card.pics?.count ?? 0
                         self.pictureCollection.reloadData()
                         viewModel.goDownloadImages(completion: {[weak self] (_) in
-                            self?.shouldDoPlaceholding = false
+                            if self?.viewModel !== viewModel {
+                                print("this cell is currently being used by another viewModel. Return. Next time it should reload already downloaded images.")
+                                return
+                            }
                             self?.pictureCollection.reloadData()
                             self?.layoutIfNeeded()
-                            })
+                        })
                     }
                     layoutIfNeeded()
                 }
@@ -137,10 +137,10 @@ extension AHCardCell: UICollectionViewDataSource {
             return cell
         }
         
-        if shouldDoPlaceholding {
-            cell.image = #imageLiteral(resourceName: "placeholder")
-        }else{
+        if viewModel.hasFinishedImageDownload {
             cell.image = viewModel.allImages[indexPath.item]
+        }else{
+            cell.image = #imageLiteral(resourceName: "placeholder")
         }
         
         return cell

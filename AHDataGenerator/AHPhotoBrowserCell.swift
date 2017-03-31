@@ -25,7 +25,6 @@ class AHPhotoBrowserCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        print("photoBrowser prepareForReuse")
         imageView.image = #imageLiteral(resourceName: "placeholder")
     }
     
