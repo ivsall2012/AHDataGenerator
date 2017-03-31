@@ -15,25 +15,19 @@ private let reuseIdentifier = "AHPhotoBrowserCell"
 class AHPhotoBrowser: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
 
-    var photos: [String]? {
-        didSet {
-            if photos != nil {
-                collectionView?.reloadData()
-            }
-            
-        }
-    }
-    
-//    var initialIndex: IndexPath? {
+    var viewModel: AHCardViewModel?
+//    {
 //        didSet {
-//            if let initialIndex = initialIndex {
-//                
+//            if viewModel != nil {
+//                collectionView.reloadData()
 //            }
 //        }
 //    }
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.reloadData()
         let layout = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.scrollDirection = .horizontal
     }
@@ -56,16 +50,27 @@ extension AHPhotoBrowser: UICollectionViewDelegateFlowLayout {
 
 extension AHPhotoBrowser: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos?.count ?? 0
+        guard let viewModel = viewModel else {
+            return 0
+        }
+        guard viewModel.hasFinishedImageDownload else {
+            return 0
+        }
+        return viewModel.allImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! AHPhotoBrowserCell
         
-        if let imageStr = photos?[indexPath.item] {
-            cell.imageStr = imageStr
+        guard let viewModel = viewModel else {
+            return cell
         }
         
+        guard viewModel.hasFinishedImageDownload else {
+            return cell
+        }
+        
+        cell.image = viewModel.allImages[indexPath.item]
         return cell
     }
 }

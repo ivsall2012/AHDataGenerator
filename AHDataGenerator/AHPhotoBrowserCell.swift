@@ -24,6 +24,7 @@ class AHPhotoBrowserCell: UICollectionViewCell {
         scrollView.addSubview(imageView)
     }
     
+    ///MARK:- This function is the part where you can then download HD image and set size and use this original smaller size image as a placeholder
     func setupImageView(image: UIImage) {
         let superSize = UIScreen.main.bounds.size
         let imgSize = image.size
@@ -40,6 +41,7 @@ class AHPhotoBrowserCell: UICollectionViewCell {
         }
         let newFrame = CGRect(x: newX, y: newY, width: newWidth, height: newHeight)
         imageView.frame = newFrame
+        imageView.image = image
         scrollView.contentSize = CGSize(width: superSize.width, height: newHeight)
         layoutIfNeeded()
     }

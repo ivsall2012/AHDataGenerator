@@ -27,29 +27,38 @@ class AHCardCell: UITableViewCell {
     @IBOutlet weak var gapBetweenTextAndPicsConstraint: NSLayoutConstraint!
 
     var mainVC: UIViewController?
-    var cardModel: AHCardModel? {
+    var viewModel: AHCardViewModel? {
         didSet{
-            if let cardModel = cardModel {
-                avatar.AH_setImage(urlStr: cardModel.avatar.absoluteString)
-                author.text = cardModel.author
-                if let text = cardModel.mainText, text.characters.count > 0 {
-                    gapBetweenTextAndPicsConstraint.constant = padding
-                    mainText.text = text
-                    mainTextHeightConstraint.constant = cardModel.mainTextHeight
-                }else{
-                    gapBetweenTextAndPicsConstraint.constant = 0.0
-                    mainText.text = ""
-                    mainTextHeightConstraint.constant = 0.0
+            if let viewModel = viewModel {
+                if let card = viewModel.card {
+                    avatar.AH_setImage(urlStr: card.avatar.absoluteString)
+                    author.text = card.author
+                    if let text = card.mainText, text.characters.count > 0 {
+                        gapBetweenTextAndPicsConstraint.constant = padding
+                        mainText.text = text
+                        mainTextHeightConstraint.constant = viewModel.mainTextHeight
+                    }else{
+                        gapBetweenTextAndPicsConstraint.constant = 0.0
+                        mainText.text = ""
+                        mainTextHeightConstraint.constant = 0.0
+                    }
+                    if let pics = card.pics, pics.count > 0 {
+                        pictureCollectionHeightConstraint.constant = viewModel.pictureCollectionHeight
+                    }else{
+                        gapBetweenTextAndPicsConstraint.constant = 0.0
+                        pictureCollectionHeightConstraint.constant = 0.0
+                    }
+                    if viewModel.hasFinishedImageDownload {
+                        pictureCollection.reloadData()
+                    }else{
+                        viewModel.goDownloadImages(completion: {[weak self] (_) in
+                            self?.pictureCollection.reloadData()
+                            self?.layoutIfNeeded()
+                            })
+                    }
+                    
                 }
-                if let pics = cardModel.pics, pics.count > 0 {
-                    pictureCollectionHeightConstraint.constant = cardModel.pictureCollectionHeight
-                }else{
-                    gapBetweenTextAndPicsConstraint.constant = 0.0
-                    pictureCollectionHeightConstraint.constant = 0.0
-                }
-//                print("\(cardModel.author)\ntextHeight:\(mainTextHeightConstraint.constant)\npicHeight:\(pictureCollectionHeightConstraint.constant)\ngap:\(gapBetweenTextAndPicsConstraint.constant)\n totle:\(cardModel.cellHeight)\n=====\n")
-                pictureCollection.reloadData()
-                layoutIfNeeded()
+                
                 
             }
             
@@ -74,7 +83,6 @@ class AHCardCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        print("setSelected")
         // Configure the view for the selected state
     }
     override func prepareForReuse() {
@@ -90,15 +98,21 @@ class AHCardCell: UITableViewCell {
 
 extension AHCardCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cardModel!.pictureSize
+        return viewModel?.pictureSize ?? CGSize.zero
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let viewModel = viewModel else {
+            return
+        }
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "AHPhotoBrowser") as! AHPhotoBrowser
-        let model = cardModel!.pics
-        vc.photos = model
-        mainVC?.present(vc, animated: true, completion: nil)
+        
+        if viewModel.hasFinishedImageDownload {
+            vc.viewModel = viewModel
+            mainVC?.present(vc, animated: true, completion: nil)
+        }
+        
     }
 
     
@@ -110,11 +124,20 @@ extension AHCardCell: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cardModel?.pics?.count ?? 0
+        return viewModel?.card?.pics?.count ?? 0
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! AHPicCollectionCell
-        let pics = cardModel!.pics!
+        
+        guard let viewModel = viewModel else {
+            return cell
+        }
+
+        guard viewModel.hasFinishedImageDownload else {
+            return cell
+        }
+        
+        cell.image = viewModel.allImages[indexPath.item]
         
         return cell
     }

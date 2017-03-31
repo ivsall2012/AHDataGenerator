@@ -12,15 +12,16 @@ let collectionCell = "collectionCell"
 
 class AHPicCollectionCell: UICollectionViewCell {
     @IBOutlet weak var pictureView: UIImageView!
-    var imageStr: String? {
+    
+    var image: UIImage? {
         didSet{
-            if let imageStr = imageStr {
-                pictureView.AH_setImage(urlStr: imageStr)
+            if let image = image {
+                pictureView.image = image
             }
         }
     }
     
     override func prepareForReuse() {
-        pictureView.image = nil
+        pictureView.image = #imageLiteral(resourceName: "placeholder")
     }
 }

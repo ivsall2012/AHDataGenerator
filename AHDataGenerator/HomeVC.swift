@@ -9,7 +9,7 @@
 import UIKit
 let cardId = "card"
 class HomeVC: UITableViewController {
-    var cards = AHCardDataGenerator.generator.randomData()
+    var cards : [AHCardViewModel] = AHCardDataGenerator.generator.randomData()
     override func viewDidLoad() {
         tableView.estimatedRowHeight = 400.0
     }
@@ -19,7 +19,8 @@ class HomeVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cardId) as! AHCardCell
-        cell.cardModel = cards[indexPath.row]
+        let viewModel = cards[indexPath.row]
+        cell.viewModel = viewModel
         cell.mainVC = self
         return cell
         

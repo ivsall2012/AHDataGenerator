@@ -12,6 +12,8 @@ public class AHCardDataGenerator: NSObject {
     static let generator =  AHCardDataGenerator()
     let shouldUseLocalImages = false
     let randomPicURL = "http://lorempixel.com/400/200"
+    let randomPicHolder = "http://placehold.it/350x150"
+    let anotherPlaceHolder = "https://placeimg.com/640/480/any"
     
     let paragraph = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam. "
     
@@ -33,7 +35,19 @@ public class AHCardDataGenerator: NSObject {
 
 
 extension AHCardDataGenerator{
-    func randomData() -> [AHCardModel] {
+    func randomData() -> [AHCardViewModel] {
+        let cards = randomCardBatch()
+        var viewModelArr = [AHCardViewModel]()
+        for card in cards {
+            let viewModel = AHCardViewModel()
+            viewModel.card = card
+            viewModelArr.append(viewModel)
+        }
+        return viewModelArr
+    }
+    
+    
+    func randomCardBatch() -> [AHCardModel] {
         var data = [AHCardModel]()
 //        let numOfCards = random(20)
         for _ in 0..<100 {
@@ -86,7 +100,9 @@ extension AHCardDataGenerator{
             for _ in 0..<numOfPics {
                 let width = 100 * random(1, 6)
                 let height = 100 * random(1, 6)
-                let imageUrl = "http://lorempixel.com/\(width)/\(height)"
+//                let imageUrl = "http://lorempixel.com/\(width)/\(height)"
+//                let imageUrl = "http://placehold.it/\(width)x\(height)"
+                let imageUrl = "https://placeimg.com/\(width)/\(height)/any"
                 pics.append(imageUrl)
             }
             dict["pics"] = pics
