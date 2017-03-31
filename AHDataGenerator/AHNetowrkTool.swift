@@ -13,35 +13,33 @@ let shouldCacheImage = true
 class AHNetowrkTool: NSObject {
     static let tool = AHNetowrkTool()
     
+    var imageCache = [String: UIImage]()
+    
     func requestImage(urlStr: String, completion: @escaping (_ image: UIImage?) -> Swift.Void) {
         guard let url = URL(string: urlStr) else {
             return
         }
-//        if shouldCacheImage {
-//            let cacheSizeMemory = 500 * 1024 * 1024; // 500 MB
-//            let cacheSizeDisk = 500 * 1024 * 1024; // 500 MB
-//            let sharedCache = URLCache(memoryCapacity: cacheSizeMemory, diskCapacity: cacheSizeDisk, diskPath: "urlCache")
-//            URLCache.shared = sharedCache
-//            let config = URLSession.shared.configuration
-//            config.requestCachePolicy = .returnCacheDataElseLoad
-//        }else{
-//            let config = URLSession.shared.configuration
-//            config.requestCachePolicy = .reloadIgnoringLocalCacheData
-//        }
-        let task = URLSession.shared.dataTask(with: url) { (data, _, error) in
-            DispatchQueue.main.async {
-                if let data = data, error == nil {
-                    if let image = UIImage(data: data) {
-                        completion(image)
-                        return
+        if let cachedImg = imageCache[url.absoluteString] {
+            print("cachedImg is in use! -> \(url.absoluteString)")
+            completion(cachedImg)
+        }else{
+            let task = URLSession.shared.dataTask(with: url) { (data, _, error) in
+                DispatchQueue.main.async {
+                    if let data = data, error == nil {
+                        if let image = UIImage(data: data) {
+                            self.imageCache[url.absoluteString] = image
+                            completion(image)
+                            return
+                        }
+                        
                     }
-                    
+                    completion(nil)
                 }
-                completion(nil)
             }
-        }
-        DispatchQueue.global().async {
-            task.resume()
+            DispatchQueue.global().async {
+                task.resume()
+            }
+
         }
     }
 }
