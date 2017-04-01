@@ -28,6 +28,7 @@ class AHPhotoBrowser: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.reloadData()
+        collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         let layout = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.scrollDirection = .horizontal
     }

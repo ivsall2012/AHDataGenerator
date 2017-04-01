@@ -94,20 +94,22 @@ extension AHCardDataGenerator{
             }
             
         }else{
-            
-            let numOfPics = random(1, 10)
-            var pics = [String]()
-            for _ in 0..<numOfPics {
-                let width = 100 * random(1, 6)
-                let height = 100 * random(1, 6)
-                let imageUrlA = "http://lorempixel.com/\(width)/\(height)"
-                let imageUrlB = "http://placehold.it/\(width)x\(height)"
-                let imageUrlC = "https://placeimg.com/\(width)/\(height)/any"
-                let images = [imageUrlA,imageUrlB,imageUrlC]
-                let imageUrl = images[random(images.count)]
-                pics.append(imageUrl)
+            if randomPercentChance(percent: 80) {
+                let numOfPics = random(1, 10)
+                var pics = [String]()
+                for _ in 0..<numOfPics {
+                    let width = 100 * random(1, 6)
+                    let height = 100 * random(1, 6)
+                    let imageUrlA = "http://lorempixel.com/\(width)/\(height)"
+                    let imageUrlB = "http://placehold.it/\(width)x\(height)"
+                    let imageUrlC = "https://placeimg.com/\(width)/\(height)/any"
+                    let images = [imageUrlA,imageUrlB,imageUrlC]
+                    let imageUrl = images[random(images.count)]
+                    pics.append(imageUrl)
+                }
+                dict["pics"] = pics
             }
-            dict["pics"] = pics
+            
         }
         
         
