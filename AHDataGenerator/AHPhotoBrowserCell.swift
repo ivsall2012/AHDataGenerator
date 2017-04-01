@@ -21,6 +21,8 @@ class AHPhotoBrowserCell: UICollectionViewCell {
         }
     }
     override func awakeFromNib() {
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
         scrollView.addSubview(imageView)
     }
     

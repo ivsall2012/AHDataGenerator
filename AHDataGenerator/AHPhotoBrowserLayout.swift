@@ -16,29 +16,26 @@ class AHPhotoBrowserLayout: UICollectionViewFlowLayout {
     
     
     /// This function produce inconsistent slide photo experience
-//    override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
-//        if let attributes = super.layoutAttributesForElements(in: collectionView!.bounds) {
-//            let half = collectionView!.bounds.width * 0.5
-//            let proposedOffsetCneterX = collectionView!.contentOffset.x + half
-//            
-//            let closests = attributes.sorted(by: { (attrA, attrB) -> Bool in
-//                return abs(attrA.center.x - proposedOffsetCneterX) < abs(attrB.center.x - proposedOffsetCneterX)
-//            })
-//            
-//            let targetAttr : UICollectionViewLayoutAttributes
-//            if closests.count > 1 && abs(velocity.x) > 0.5 {
-//                targetAttr = closests[1]
-//                // second would be the current one and the user won't be able to slide to next picture sometimes
-//                print("second")
-//            }else{
-//                targetAttr = closests[0]
-//                print("first")
-//            }
-//            
-//            return CGPoint(x: targetAttr.center.x - half, y: proposedContentOffset.y)
-//            
-//        }
-//        
-//        return CGPoint.zero
-//    }
+    override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+        if let attributes = super.layoutAttributesForElements(in: collectionView!.bounds) {
+            let half = collectionView!.bounds.width * 0.5
+            let proposedOffsetCneterX = collectionView!.contentOffset.x + half
+            
+            let closests = attributes.sorted(by: { (attrA, attrB) -> Bool in
+                return abs(attrA.center.x - proposedOffsetCneterX) < abs(attrB.center.x - proposedOffsetCneterX)
+            })
+            
+            let targetAttr : UICollectionViewLayoutAttributes
+            if closests.count > 1 && abs(velocity.x) > 0.1 {
+                targetAttr = closests[1]
+            }else{
+                targetAttr = closests[0]
+            }
+            
+            return CGPoint(x: targetAttr.center.x - half, y: proposedContentOffset.y)
+            
+        }
+        
+        return CGPoint.zero
+    }
 }
