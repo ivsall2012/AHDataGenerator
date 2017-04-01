@@ -19,23 +19,38 @@ class AHPhotoBrowserLayout: UICollectionViewFlowLayout {
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
         if let attributes = super.layoutAttributesForElements(in: collectionView!.bounds) {
             let half = collectionView!.bounds.width * 0.5
-            let proposedOffsetCneterX = collectionView!.contentOffset.x + half
+            let proposedOffsetCenterX = collectionView!.contentOffset.x + half
             
-            let closests = attributes.sorted(by: { (attrA, attrB) -> Bool in
-                return abs(attrA.center.x - proposedOffsetCneterX) < abs(attrB.center.x - proposedOffsetCneterX)
+            let sortedAttributes = attributes.sorted(by: { (attrA, attrB) -> Bool in
+                return abs(attrA.center.x - proposedOffsetCenterX) < abs(attrB.center.x - proposedOffsetCenterX)
             })
             
-            let targetAttr : UICollectionViewLayoutAttributes
-            if closests.count > 1 && abs(velocity.x) > 0.1 {
-                targetAttr = closests[1]
-            }else{
-                targetAttr = closests[0]
-            }
+            let targetAttr = pickTheNextAttributes(attributs: sortedAttributes, velocity: velocity)
             
             return CGPoint(x: targetAttr.center.x - half, y: proposedContentOffset.y)
             
         }
         
         return CGPoint.zero
+    }
+    
+    fileprivate func pickTheNextAttributes(attributs: [UICollectionViewLayoutAttributes],velocity: CGPoint) -> UICollectionViewLayoutAttributes {
+        let target: UICollectionViewLayoutAttributes
+        if attributs.count > 1 && abs(velocity.x) > 0.3 {
+            // should scroll to next one
+            let attr1 = attributs[0]
+            let attr2 = attributs[1]
+            if velocity.x > 0.0 {
+                // scroll right, take the farthest one, relatively to future proposedOffsetCenterX
+                target = attr1.center.x > attr2.center.x ? attr1 : attr2
+            }else{
+                // scroll left, take the nearest one, relatively to future proposedOffsetCenterX
+                target = attr1.center.x < attr2.center.x ? attr1 : attr2
+            }
+        }else{
+            // only one left, take this one
+            target = attributs[0]
+        }
+        return target
     }
 }
