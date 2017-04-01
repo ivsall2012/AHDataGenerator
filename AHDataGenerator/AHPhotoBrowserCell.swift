@@ -71,16 +71,16 @@ extension AHPhotoBrowserCell: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        UIView.animate(withDuration: 0.1, animations: {
-            self.imageView.center = .init(x: scrollView.bounds.width * 0.5, y: scrollView.bounds.height * 0.5)
-        }) { (_) in
-            self.scrollView.contentSize = CGSize(width: self.imageView.frame.size.width, height: self.imageView.frame.size.height)
-        }
-    }
-    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        
-    }
+//    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+//        UIView.animate(withDuration: 0.1, animations: {
+//            self.imageView.center = .init(x: scrollView.bounds.width * 0.5, y: scrollView.bounds.height * 0.5)
+//        }) { (_) in
+//            self.scrollView.contentSize = CGSize(width: self.imageView.frame.size.width, height: self.imageView.frame.size.height)
+//        }
+//    }
+//    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+//        
+//    }
     
 }
 
