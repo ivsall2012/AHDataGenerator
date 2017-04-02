@@ -59,7 +59,7 @@ class AHPhotoBrowserCell: UICollectionViewCell {
         let newFrame = AHPhotoBrowser.calculateImageSize(image: image)
         imageView.frame = newFrame
         imageView.image = image
-        scrollView.contentSize = CGSize(width: mainScreenSize.width, height: newFrame.height)
+        scrollView.contentSize = CGSize(width: screenSize.width, height: screenSize.height)
         layoutIfNeeded()
     }
 }

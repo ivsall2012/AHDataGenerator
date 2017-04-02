@@ -20,7 +20,6 @@ class AHNetowrkTool: NSObject {
             return
         }
         if let cachedImg = imageCache[url.absoluteString] {
-            print("cachedImg is in use! -> \(url.absoluteString)")
             completion(cachedImg)
         }else{
             let task = URLSession.shared.dataTask(with: url) { (data, _, error) in

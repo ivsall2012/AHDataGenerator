@@ -10,7 +10,7 @@ import UIKit
 
 
 let photoBrowserCellMargin: CGFloat = 5.0
-let mainScreenSize: CGSize = UIScreen.main.bounds.size
+let screenSize: CGSize = UIScreen.main.bounds.size
 
 private let reuseIdentifier = "AHPhotoBrowserCell"
 
@@ -24,7 +24,6 @@ class AHPhotoBrowser: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.reloadData()
-        
         collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         let layout = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.scrollDirection = .horizontal
@@ -42,16 +41,16 @@ class AHPhotoBrowser: UIViewController {
     
     class func calculateImageSize(image: UIImage) -> CGRect {
         let imgSize = image.size
-        let newWidth = mainScreenSize.width - 2 * photoBrowserCellMargin
+        let newWidth = screenSize.width - 2 * photoBrowserCellMargin
         let newHeight = newWidth * imgSize.height / imgSize.width
         let newX : CGFloat = photoBrowserCellMargin
         var newY: CGFloat
-        if newHeight > mainScreenSize.height {
+        if newHeight > screenSize.height {
             // log photo
             newY = 0.0
         }else{
             // photo can fit in the screen
-            newY = (mainScreenSize.height - newHeight) * 0.5
+            newY = (screenSize.height - newHeight) * 0.5
         }
         let newFrame = CGRect(x: newX, y: newY, width: newWidth, height: newHeight)
         return newFrame
@@ -81,7 +80,8 @@ extension AHPhotoBrowser {
 
 extension AHPhotoBrowser: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return collectionView.bounds.size
+        // collectionView's frame and bounds are not accurate
+        return screenSize
     }
 }
 

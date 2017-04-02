@@ -12,7 +12,15 @@ class HomeVC: UITableViewController {
     var cards : [AHCardViewModel] = AHCardDataGenerator.generator.randomData()
     override func viewDidLoad() {
         tableView.estimatedRowHeight = 400.0
+//        let refreshControl = UIRefreshControl()
+//        refreshControl.addTarget(self, action: #selector(refreshHandler(_:)), for: .valueChanged)
+//        tableView.refreshControl = refreshControl
     }
+//    func refreshHandler(_ sender: UIRefreshControl){
+//        cards = AHCardDataGenerator.generator.randomData()
+//        tableView.reloadData()
+//        sender.endRefreshing()
+//    }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cards.count
     }
