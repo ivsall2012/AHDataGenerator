@@ -11,7 +11,9 @@ import UIKit
 class AHPicCollectionManager: NSObject {
     weak var mainVC: UIViewController?
     weak var viewModel: AHCardViewModel?
-    weak var pictureCollection: UICollectionView?     
+    weak var pictureCollection: UICollectionView?
+    weak var photoBrowserVC: AHPhotoBrowser?
+    var animator = AHAnimator()
 }
 
 extension AHPicCollectionManager: UICollectionViewDelegateFlowLayout {
@@ -25,16 +27,44 @@ extension AHPicCollectionManager: UICollectionViewDelegateFlowLayout {
             return
         }
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "AHPhotoBrowser") as! AHPhotoBrowser
+        photoBrowserVC = storyboard.instantiateViewController(withIdentifier: "AHPhotoBrowser") as? AHPhotoBrowser
         
-        if viewModel.hasFinishedImageDownload {
-            vc.viewModel = viewModel
-            mainVC?.present(vc, animated: true, completion: nil)
+        if let photoBrowserVC = photoBrowserVC {
+            animator.delegate = self
+            animator.actingIndexPath = indexPath
+            photoBrowserVC.transitioningDelegate = animator
+            photoBrowserVC.modalPresentationStyle = .custom
+            if viewModel.hasFinishedImageDownload {
+                photoBrowserVC.viewModel = viewModel
+                photoBrowserVC.currentIndexPath = indexPath
+                mainVC?.present(photoBrowserVC, animated: true, completion: nil)
+            }
         }
         
     }
     
     
+}
+
+extension AHPicCollectionManager: AHAnimatorDelegate {
+    func AHAnimatorEndIndexPath() -> IndexPath {
+        return photoBrowserVC!.currentIndexPath!
+    }
+    
+    func AHAnimatorView(indexPath: IndexPath) -> UIView {
+        let item = pictureCollection!.cellForItem(at: indexPath) as! AHPicCollectionCell
+        return UIImageView(image: item.image)
+    }
+    func AHAnimatorStartFrameFor(indexPath: IndexPath) -> CGRect {
+        let item = pictureCollection!.cellForItem(at: indexPath) as! AHPicCollectionCell
+        let rect = item.convert(item.pictureView.frame, to: UIApplication.shared.keyWindow!)
+        return rect
+    }
+    func AHAnimatorEndFrameFor(indexPath: IndexPath) -> CGRect {
+        let item = pictureCollection!.cellForItem(at: indexPath) as! AHPicCollectionCell
+        let rect = AHPhotoBrowser.calculateImageSize(image: item.image!)
+        return rect
+    }
 }
 
 extension AHPicCollectionManager: UICollectionViewDataSource {

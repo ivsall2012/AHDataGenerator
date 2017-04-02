@@ -9,6 +9,8 @@
 import UIKit
 
 
+let photoBrowserCellMargin: CGFloat = 5.0
+let mainScreenSize: CGSize = UIScreen.main.bounds.size
 
 private let reuseIdentifier = "AHPhotoBrowserCell"
 
@@ -16,13 +18,7 @@ class AHPhotoBrowser: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
 
     var viewModel: AHCardViewModel?
-//    {
-//        didSet {
-//            if viewModel != nil {
-//                collectionView.reloadData()
-//            }
-//        }
-//    }
+    var currentIndexPath: IndexPath?
 
 
     override func viewDidLoad() {
@@ -32,6 +28,34 @@ class AHPhotoBrowser: UIViewController {
         let layout = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.scrollDirection = .horizontal
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // You need to call this before scroll to item in order for collection view to layout its item cells, then scroll.
+        self.view.layoutIfNeeded()
+        
+        if let currentIndexPath = currentIndexPath , viewModel != nil {
+            collectionView.scrollToItem(at: currentIndexPath, at: UICollectionViewScrollPosition.right, animated: false)
+        }
+    }
+    
+    class func calculateImageSize(image: UIImage) -> CGRect {
+        let imgSize = image.size
+        let newWidth = mainScreenSize.width - 2 * photoBrowserCellMargin
+        let newHeight = newWidth * imgSize.height / imgSize.width
+        let newX : CGFloat = photoBrowserCellMargin
+        var newY: CGFloat
+        if newHeight > mainScreenSize.height {
+            // log photo
+            newY = 0.0
+        }else{
+            // photo can fit in the screen
+            newY = (mainScreenSize.height - newHeight) * 0.5
+        }
+        let newFrame = CGRect(x: newX, y: newY, width: newWidth, height: newHeight)
+        return newFrame
+    }
+    
+    
     @IBAction func dismiss(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
@@ -41,6 +65,16 @@ class AHPhotoBrowser: UIViewController {
 
 }
 
+extension AHPhotoBrowser {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let items = collectionView.visibleCells
+        if items.count == 1 {
+            currentIndexPath = collectionView.indexPath(for: items.first!)
+        }else{
+            print("visible items have more then 1, problem?!")
+        }
+    }
+}
 
 
 extension AHPhotoBrowser: UICollectionViewDelegateFlowLayout {

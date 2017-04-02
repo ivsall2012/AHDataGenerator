@@ -8,35 +8,39 @@
 
 import UIKit
 
-class AHAnimator: NSObject {
-    var presentedViewFrame: CGRect = CGRect.zero
-    fileprivate var isPresented = false
-    fileprivate var callback: ((_ isPresented: Bool)->())?
-    init(_ callback: @escaping (_ isPresented: Bool)->()) {
-        self.callback = callback
-    }
+protocol AHAnimatorDelegate: NSObjectProtocol {
+    func AHAnimatorStartFrameFor(indexPath : IndexPath) -> CGRect
+    func AHAnimatorEndFrameFor(indexPath : IndexPath) -> CGRect
+    func AHAnimatorView(indexPath : IndexPath) -> UIView
+    func AHAnimatorEndIndexPath() -> IndexPath
 }
 
+class AHAnimator: NSObject {
+    weak var delegate: AHAnimatorDelegate?
+    
+    var actingIndexPath: IndexPath?
+    var isPresented = false
+}
+
+
 extension AHAnimator : UIViewControllerTransitioningDelegate{
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        
-        let presentationVC =  AHPresentationVC(presentedViewController: presented, presenting: presenting)
-        presentationVC.presentedViewFrame = presentedViewFrame
-        return presentationVC
-    }
+//    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+//        
+//        let presentationVC =  AHPresentationVC(presentedViewController: presented, presenting: presenting)
+//        presentationVC.presentedViewFrame = presentedViewFrame
+//        return presentationVC
+//    }
     
     // wil animate
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         // about to present the animation, so isPresented is sort of true
         isPresented = true
-        self.callback!(isPresented)
         
         return self
     }
     // did animate
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         isPresented = false
-        self.callback!(isPresented)
         
         return self
     }
@@ -52,17 +56,25 @@ extension AHAnimator : UIViewControllerAnimatedTransitioning {
     
     // for presenting aniamtion
     func animationTransitionForPresenting(using context: UIViewControllerContextTransitioning){
+        guard let delegate = delegate, let actingIndexPath = actingIndexPath else {
+            return
+        }
+        
         // get presentedView by UITransitionContextViewKey.to
         if let presentedView = context.view(forKey: UITransitionContextViewKey.to){
+            presentedView.alpha = 0.0
             // add to subview manually
             context.containerView.addSubview(presentedView)
-            
+            let animatedView = delegate.AHAnimatorView(indexPath: actingIndexPath)
+            animatedView.frame = delegate.AHAnimatorStartFrameFor(indexPath: actingIndexPath)
+            context.containerView.addSubview(animatedView)
             // do animation
-            presentedView.transform = CGAffineTransform(scaleX: 1.0, y: 0.0)
-            presentedView.layer.anchorPoint = CGPoint(x: 0.5, y: 0)
+            
             UIView.animate(withDuration: transitionDuration(using: context), animations: {
-                    presentedView.transform = CGAffineTransform.identity
+                animatedView.frame = delegate.AHAnimatorEndFrameFor(indexPath: actingIndexPath)
                 }, completion: { (_) in
+                    animatedView.removeFromSuperview()
+                    presentedView.alpha = 1.0
                     context.completeTransition(true)
             })
         }
@@ -72,13 +84,24 @@ extension AHAnimator : UIViewControllerAnimatedTransitioning {
     }
     /// For dismissing animation
     func animationTransitionForDismissing(using context: UIViewControllerContextTransitioning){
+        
+        guard let delegate = delegate else {
+            return
+        }
+        
         // get presentedView by UITransitionContextViewKey.from
         if let dismissedView = context.view(forKey: UITransitionContextViewKey.from) {
+            dismissedView.removeFromSuperview()
             // do animation
+            let actingIndexPath = delegate.AHAnimatorEndIndexPath()
+            let animatedView = delegate.AHAnimatorView(indexPath: actingIndexPath)
+            animatedView.frame = delegate.AHAnimatorEndFrameFor(indexPath: actingIndexPath)
+            context.containerView.addSubview(animatedView)
+            
             UIView.animate(withDuration: transitionDuration(using: context), animations: {
-                dismissedView.transform = CGAffineTransform(scaleX: 1.0, y: 0.0001)
+                animatedView.frame = delegate.AHAnimatorStartFrameFor(indexPath: actingIndexPath)
             }) { (_) in
-                dismissedView.removeFromSuperview()
+                animatedView.removeFromSuperview()
                 context.completeTransition(true)
             }
         }
@@ -100,7 +123,7 @@ class AHPresentationVC: UIPresentationController {
         presentedView?.frame = presentedViewFrame
         
         // setup mask
-        setupBackgroundMask()
+//        setupBackgroundMask()
     }
 }
 
