@@ -77,6 +77,14 @@ extension AHAnimator : UIViewControllerAnimatedTransitioning {
                     presentedView.alpha = 1.0
                     context.completeTransition(true)
             })
+            
+//            UIView.animate(withDuration: transitionDuration(using: context), delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 3.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+//                animatedView.frame = delegate.AHAnimatorEndFrameFor(indexPath: actingIndexPath)
+//                }, completion: { (_) in
+//                    animatedView.removeFromSuperview()
+//                    presentedView.alpha = 1.0
+//                    context.completeTransition(true)
+//            })
         }
         
         

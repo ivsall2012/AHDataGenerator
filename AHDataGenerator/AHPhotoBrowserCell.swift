@@ -11,6 +11,8 @@ import UIKit
 
 class AHPhotoBrowserCell: UICollectionViewCell {
     @IBOutlet weak var scrollView: UIScrollView!
+    
+    weak var mainVC: UIViewController?
     var imageView = UIImageView()
     var image: UIImage? {
         didSet {
@@ -27,7 +29,17 @@ class AHPhotoBrowserCell: UICollectionViewCell {
         scrollView.bouncesZoom = true
         scrollView.addSubview(imageView)
         scrollView.delegate = self
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHanlder(_:))))
     }
+    
+    func tapHanlder(_ sender: UITapGestureRecognizer){
+        if let mainVC = mainVC {
+            mainVC.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    
     
     override func prepareForReuse() {
         super.prepareForReuse()

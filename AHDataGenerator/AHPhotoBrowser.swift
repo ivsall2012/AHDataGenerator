@@ -24,6 +24,7 @@ class AHPhotoBrowser: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.reloadData()
+        
         collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         let layout = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.scrollDirection = .horizontal
@@ -37,6 +38,7 @@ class AHPhotoBrowser: UIViewController {
             collectionView.scrollToItem(at: currentIndexPath, at: UICollectionViewScrollPosition.right, animated: false)
         }
     }
+    
     
     class func calculateImageSize(image: UIImage) -> CGRect {
         let imgSize = image.size
@@ -104,7 +106,7 @@ extension AHPhotoBrowser: UICollectionViewDataSource {
         guard viewModel.hasFinishedImageDownload else {
             return cell
         }
-        
+        cell.mainVC = self
         cell.image = viewModel.allImages[indexPath.item]
         return cell
     }
