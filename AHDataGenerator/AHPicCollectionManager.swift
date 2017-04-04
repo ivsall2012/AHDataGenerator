@@ -53,7 +53,9 @@ extension AHPicCollectionManager: AHAnimatorDelegate {
     
     func AHAnimatorView(indexPath: IndexPath) -> UIView {
         let item = pictureCollection!.cellForItem(at: indexPath) as! AHPicCollectionCell
-        return UIImageView(image: item.image)
+        let imageView = UIImageView(image: item.image)
+        imageView.contentMode = .scaleAspectFill
+        return imageView
     }
     func AHAnimatorStartFrameFor(indexPath: IndexPath) -> CGRect {
         let item = pictureCollection!.cellForItem(at: indexPath) as! AHPicCollectionCell

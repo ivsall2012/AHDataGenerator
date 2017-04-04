@@ -62,6 +62,10 @@ extension AHAnimator : UIViewControllerAnimatedTransitioning {
         
         // get presentedView by UITransitionContextViewKey.to
         if let presentedView = context.view(forKey: UITransitionContextViewKey.to){
+            let fromVC = context.viewController(forKey: UITransitionContextViewControllerKey.from)
+            let toVC = context.viewController(forKey: UITransitionContextViewControllerKey.to)
+            print(fromVC)
+            print(toVC)
             presentedView.alpha = 0.0
             // add to subview manually
             context.containerView.addSubview(presentedView)
@@ -100,6 +104,10 @@ extension AHAnimator : UIViewControllerAnimatedTransitioning {
         // get presentedView by UITransitionContextViewKey.from
         if let dismissedView = context.view(forKey: UITransitionContextViewKey.from) {
             dismissedView.removeFromSuperview()
+            let fromVC = context.viewController(forKey: UITransitionContextViewControllerKey.from)
+            let toVC = context.viewController(forKey: UITransitionContextViewControllerKey.to)
+            print(fromVC)
+            print(toVC)
             // do animation
             let actingIndexPath = delegate.AHAnimatorEndIndexPath()
             let animatedView = delegate.AHAnimatorView(indexPath: actingIndexPath)
