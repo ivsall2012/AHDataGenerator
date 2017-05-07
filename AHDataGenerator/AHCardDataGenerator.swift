@@ -10,7 +10,7 @@ import UIKit
 
 public class AHCardDataGenerator: NSObject {
     static let generator =  AHCardDataGenerator()
-    let shouldUseLocalImages = false
+
     let randomPicURL = "http://lorempixel.com/400/200"
     let randomPicHolder = "http://placehold.it/350x150"
     let anotherPlaceHolder = "https://placeimg.com/640/480/any"
@@ -26,8 +26,6 @@ public class AHCardDataGenerator: NSObject {
     "https://firebasestorage.googleapis.com/v0/b/localfun-c9f46.appspot.com/o/internal-user-icons%2Fuser-icon-102-done.png?alt=media&token=0acb9659-4c19-49f7-a9d3-cc7ea595a4e4",
     "https://firebasestorage.googleapis.com/v0/b/localfun-c9f46.appspot.com/o/internal-user-icons%2Fuser-icon-101-done.png?alt=media&token=f2ca4770-47b4-45f5-9765-d5fbfd2b558a",
     "https://firebasestorage.googleapis.com/v0/b/localfun-c9f46.appspot.com/o/internal-user-icons%2Fuser-icon-103-done.png?alt=media&token=afad647c-b482-41b6-9cd7-441c5c1f958d"]
-    
-    let picGallery = ["Alaska", "California", "Colorado", "Utah", "Washington","California", "Colorado", "Alaska", "California"]
     
     
     
@@ -80,37 +78,18 @@ extension AHCardDataGenerator{
             dict["mainText"] = mainText
         }
         
-        if shouldUseLocalImages {
-            // 70% chance for having a pic gallery
-            if randomPercentChance(percent: 70) {
-                let numOfPics = random(1, 10)
-                var pics = [String]()
-                for _ in 0..<numOfPics {
-                    let index = random(picGallery.count)
-                    let picURL = picGallery[index]
-                    pics.append(picURL)
-                }
-                dict["pics"] = pics
-            }
-            
-        }else{
-            if randomPercentChance(percent: 80) {
-                let numOfPics = random(1, 10)
-                var pics = [String]()
-                for _ in 0..<numOfPics {
-                    let width = 100 * random(1, 6)
-                    let height = 100 * random(1, 6)
-                    let imageUrlA = "http://lorempixel.com/\(width)/\(height)"
-                    let imageUrlB = "http://placehold.it/\(width)x\(height)"
-                    let imageUrlC = "https://placeimg.com/\(width)/\(height)/any"
-                    let images = [imageUrlA,imageUrlB,imageUrlC]
-                    let imageUrl = images[random(images.count)]
-                    pics.append(imageUrl)
-                }
-                dict["pics"] = pics
-            }
-            
+        let numOfPics = random(1, 10)
+        var pics = [String]()
+        for _ in 0..<numOfPics {
+            let width = 100 * random(1, 6)
+            let height = 100 * random(1, 7)
+            let imageUrlA = "http://lorempixel.com/\(width)/\(height)"
+            let imageUrlC = "https://placeimg.com/\(width)/\(height)/any"
+            let images = [imageUrlA,imageUrlC]
+            let imageUrl = images[random(images.count)]
+            pics.append(imageUrl)
         }
+        dict["pics"] = pics
         
         
         return dict
