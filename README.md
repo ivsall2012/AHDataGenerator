@@ -7,4 +7,4 @@ This is my first Swift project. And it has a kinda "magical" transition animatio
 This project helped me built up some experences on cusome transitions for later writing AHPinterest.
 
 ### Demo
-https://youtu.be/GEV3LGBLauo
+https://youtu.be/GEV3LGBLauo (37 seconds)
